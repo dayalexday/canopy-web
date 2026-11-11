@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>canopy</title>
+  <meta name="description" content="Beautiful streets are groves with buildings in them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0b0a;
+      --ink: #efe9dc;
+      --muted: #9a9488;
+      --line: rgba(239, 233, 220, 0.12);
+      --metal: #c6b59a;
+      --measure: 40rem;
+      --frame: 42rem;
+      --gallery: 72rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .compare .b { transition: none; }
+      .reveal,
+      .hero > *,
+      .hero-frame {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Instrument Sans", system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: -0.011em;
+    }
+
+    a {
+      color: var(--metal);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--metal) 45%, transparent);
+    }
+    a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+    .nav {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.15rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+    }
+
+    .mark {
+      font-family: "Instrument Serif", serif;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.35rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .nav-links a {
+      color: inherit;
+      border: 0;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    main { padding: 0 1.5rem 4.5rem; }
+
+    .hero {
+      width: min(var(--measure), 100%);
+      margin: 3.25rem auto 2.25rem;
+    }
+
+    .hero > * {
+      animation: rise 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero .kicker { animation-delay: 0.04s; }
+    .hero h1 { animation-delay: 0.12s; }
+    .hero .lede { animation-delay: 0.22s; }
+
+    .hero-frame {
+      animation: rise-photo 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: 0.28s;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes rise-photo {
+      from { opacity: 0; transform: translateY(28px); filter: saturate(0.86); }
+      to { opacity: 1; transform: none; filter: none; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      filter: saturate(0.88);
+      transition:
+        opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+    .gallery .frame.reveal:nth-child(even) { transition-delay: 0.09s; }
+    .reason.reveal:nth-child(1) { transition-delay: 0.00s; }
+    .reason.reveal:nth-child(2) { transition-delay: 0.05s; }
+    .reason.reveal:nth-child(3) { transition-delay: 0.10s; }
+    .reason.reveal:nth-child(4) { transition-delay: 0.15s; }
+    .reason.reveal:nth-child(5) { transition-delay: 0.20s; }
+
+    .kicker {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--metal);
+      margin: 0 0 1rem;
+    }
+
+    h1 {
+      font-family: "Instrument Serif", serif;
+      font-weight: 400;
+      font-size: clamp(2.15rem, 5.2vw, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0 0 1.15rem;
+      text-wrap: pretty;
+    }
+
+    .lede {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 34rem;
+      text-wrap: pretty;
+    }
+
+    .frame {
+      width: min(var(--frame), 100%);
+      margin: 0 auto 1.75rem;
+    }
+
+    .gallery .frame {
+      width: 100%;
+      margin: 0;
+    }
+
+    .compare-wrap {
+      position: relative;
+      overflow: hidden;
+      background: #161614;
+      aspect-ratio: 778 / 520;
+    }
+
+    .compare {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+      touch-action: none;
+      cursor: ew-resize;
+    }
+
+    .compare img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    .compare .b { clip-path: inset(0 0 0 var(--pos, 52%)); }
+
+    .compare .rule {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--pos, 52%);
+      width: 1px;
+      background: rgba(239, 233, 220, 0.85);
+      transform: translateX(-0.5px);
+      pointer-events: none;
+    }
+
+    .compare .knob {
+      position: absolute;
+      top: 50%;
+      left: var(--pos, 52%);
+      width: 28px;
+      height: 28px;
+      margin: -14px 0 0 -14px;
+      border-radius: 50%;
+      border: 1px solid rgba(239, 233, 220, 0.85);
+      background: rgba(11, 11, 10, 0.45);
+      pointer-events: none;
+    }
+
+    .compare input[type="range"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: ew-resize;
+      z-index: 2;
+    }
+
+    .hint {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.55rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .essay {
+      width: min(var(--measure), 100%);
+      margin: 3.25rem auto 0;
+    }
+
+    .essay p {
+      margin: 0 0 1.05rem;
+      color: #d8d2c4;
+      text-wrap: pretty;
+    }
+    .essay p:last-child { margin-bottom: 0; }
+
+    h2 {
+      font-family: "Instrument Serif", serif;
+      font-weight: 400;
+      font-size: 1.85rem;
+      letter-spacing: -0.025em;
+      margin: 0 0 0.85rem;
+    }
+
+    .section-head {
+      width: min(var(--measure), 100%);
+      margin: 4.25rem auto 1.35rem;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 32rem;
+    }
+
+    .gallery {
+      width: min(var(--gallery), 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 1.15rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 980px) {
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem 1.1rem;
+      }
+    }
+
+    .reasons {
+      width: min(44rem, 100%);
+      margin: 0 auto;
+      border-top: 1px solid var(--line);
+    }
+
+    .reason {
+      display: grid;
+      grid-template-columns: 7.5rem 1fr;
+      gap: 1.25rem;
+      padding: 1.35rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .reason dt {
+      font-family: "Instrument Serif", serif;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--metal);
+      line-height: 1.15;
+    }
+
+    .reason dd {
+      margin: 0;
+      color: #d8d2c4;
+      font-size: 0.98rem;
+    }
+
+    .reason dd span {
+      display: block;
+      margin-top: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    footer {
+      width: min(44rem, 100%);
+      margin: 3.5rem auto 0;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.55;
+    }
+    footer p { margin: 0 0 0.7rem; }
+
+    @media (max-width: 640px) {
+      .nav { padding: 0.95rem 1rem; }
+      main { padding: 0 1rem 3.5rem; }
+      .reason { grid-template-columns: 1fr; gap: 0.35rem; }
+      .hero { margin-top: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="mark">canopy</div>
+    <nav class="nav-links">
+      <a href="#streets">Streets</a>
+      <a href="#reasons">Reasons</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">A street is unfinished until it has a ceiling</p>
+      <h1>The buildings are not what you are looking at.</h1>
+      <p class="lede">The places people call beautiful are usually just places standing under trees. Architecture without a canopy is masonry and sky.</p>
+    </section>
+
+    <div class="frame hero-frame">
+      <figure class="compare-wrap">
+        <div class="compare" style="--pos: 54%">
+          <img class="a" src="images/web/13-dc-dupont-without.jpg" alt="" />
+          <img class="b" src="images/web/13-dc-dupont-with.jpg" alt="" />
+          <div class="rule"></div>
+          <div class="knob"></div>
+          <input type="range" min="0" max="100" value="54" aria-label="Reveal the trees" />
+        </div>
+      </figure>
+      <div class="hint"><span>Without</span><span>Drag</span><span>With</span></div>
+    </div>
+
+    <article class="essay reveal">
+      <p>There are streets where you walk underneath trees. Not past a few sticks in mulch — under a ceiling of leaves. Houses sit inside a grove. Shade is continuous. Somebody planted the leftover scraps of dirt. Your body understands the place before you have an opinion about the architecture.</p>
+      <p>That is why some old neighborhoods feel calm even when the buildings are ordinary, and why a street of fine rowhouses can feel slightly wrong. Take the trees away and you are left with hard surfaces and open sky. New suburbs have the same emptiness with different houses. A lot of what gets blamed on the facade is just a place with no living volume yet.</p>
+    </article>
+
+    <div class="section-head reveal" id="streets">
+      <h2>Same street. Different climate.</h2>
+      <p>Drag any picture. The houses do not change.</p>
+    </div>
+
+    <section class="gallery" aria-label="Street comparisons">
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/17-mcmansion-without.jpg" alt="" />
+            <img class="b" src="images/web/17-mcmansion-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/01-sunbelt-stucco-without.jpg" alt="" />
+            <img class="b" src="images/web/01-sunbelt-stucco-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/11-garage-townhomes-without.jpg" alt="" />
+            <img class="b" src="images/web/11-garage-townhomes-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/12-cul-de-sac-without.jpg" alt="" />
+            <img class="b" src="images/web/12-cul-de-sac-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/19-suburban-collector-without.jpg" alt="" />
+            <img class="b" src="images/web/19-suburban-collector-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/06-victorian-sf-without.jpg" alt="" />
+            <img class="b" src="images/web/06-victorian-sf-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/07-chicago-greystone-without.jpg" alt="" />
+            <img class="b" src="images/web/07-chicago-greystone-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/08-nola-shotgun-without.jpg" alt="" />
+            <img class="b" src="images/web/08-nola-shotgun-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/18-main-street-without.jpg" alt="" />
+            <img class="b" src="images/web/18-main-street-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+      <div class="frame reveal">
+        <figure class="compare-wrap">
+          <div class="compare" style="--pos: 50%">
+            <img class="a" src="images/web/04-glass-condo-without.jpg" alt="" />
+            <img class="b" src="images/web/04-glass-condo-with.jpg" alt="" />
+            <div class="rule"></div>
+            <div class="knob"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal the trees" />
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <div class="section-head reveal" id="reasons">
+      <h2>What the canopy is doing</h2>
+      <p>The feeling is not a taste argument. Shade, water, and time show up as temperature, bills, and sale prices.</p>
+    </div>
+
+    <dl class="reasons">
+      <div class="reason reveal">
+        <dt>4–6°F</dt>
+        <dd>
+          Suburban neighborhoods with mature trees run cooler in summer than new suburbs without them. Groves have been measured about 9°F cooler than open terrain at peak.<sup><a href="#s2">2</a></sup>
+          <span>Shade plus water leaving the leaves. That is the climate of a street.</span>
+        </dd>
+      </div>
+      <div class="reason reveal">
+        <dt>20–45°F</dt>
+        <dd>
+          Walls and roofs under canopy run that much cooler at the surface. A parked car in shade has been measured about 45°F cooler inside.<sup><a href="#s2">2</a></sup>
+          <span>You feel this on stoops and steering wheels before you feel it on a thermostat.</span>
+        </dd>
+      </div>
+      <div class="reason reveal">
+        <dt>~10%</dt>
+        <dd>
+          Direct shade on buildings cuts air-conditioning demand. Green infrastructure around buildings has been associated with energy-use reductions on that order.<sup><a href="#s1">1</a></sup>
+          <span>Cooling the street cools the house.</span>
+        </dd>
+      </div>
+      <div class="reason reveal">
+        <dt>15–27%</dt>
+        <dd>
+          Urban trees can take up that share of annual rainfall before it hits the pipe.<sup><a href="#s1">1</a></sup>
+          <span>A grove is also drainage.</span>
+        </dd>
+      </div>
+      <div class="reason reveal">
+        <dt>3–15%</dt>
+        <dd>
+          Larger yard and street trees have been associated with that range of added home value across neighborhoods; good cover on the block often sits around 6–9%.<sup><a href="#s3">3</a></sup>
+          <span>The expensive-looking street is usually the shaded one.</span>
+        </dd>
+      </div>
+    </dl>
+
+    <footer id="sources" class="reveal">
+      <p>Pictures are studies of the same street with and without living volume — not photographs of work already done.</p>
+      <p id="s1"><strong>1.</strong> U.S. EPA, <a href="https://www.epa.gov/heatislands/benefits-trees-and-vegetation">Benefits of Trees and Vegetation</a>. Review of 308 studies: urban forests averaged 3.0°F cooler than urban non-green areas. Green infrastructure associated with ~10% lower energy demand in nearby buildings. Urban trees absorbing 15–27% of annual rainfall.</p>
+      <p id="s2"><strong>2.</strong> U.S. EPA, <a href="https://www.epa.gov/sites/default/files/2014-08/documents/treesandvegcompendium_ch2.pdf">Reducing Urban Heat Islands: Trees and Vegetation</a>. In summer, generally 10–30% of the sun’s energy reaches below the canopy. Surface temperature reductions of 20–45°F on walls and roofs; ~45°F inside parked cars. Mature-tree suburbs 4–6°F cooler than new suburbs without trees; groves ~9°F cooler than open terrain at peak.</p>
+      <p id="s3"><strong>3.</strong> Kathleen L. Wolf, University of Washington, <a href="https://depts.washington.edu/hhwb/Thm_Economics.html">Local Economics</a> (Green Cities: Good Health). Larger trees adding 3–15% to home values; about 7% across studies; 6–9% for good neighborhood cover.</p>
+    </footer>
+  </main>
+
+  <script>
+    document.querySelectorAll(".compare").forEach((el) => {
+      const input = el.querySelector("input");
+      const set = (v) => {
+        const n = Math.max(0, Math.min(100, Number(v)));
+        el.style.setProperty("--pos", n + "%");
+        input.value = String(n);
+      };
+      input.addEventListener("input", () => set(input.value));
+    });
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reduce) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("is-in");
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+      const hero = document.querySelector(".hero-frame .compare");
+      if (hero) {
+        const input = hero.querySelector("input");
+        const start = 28;
+        const end = 62;
+        const dur = 1600;
+        let t0 = null;
+        hero.style.setProperty("--pos", start + "%");
+        input.value = String(start);
+        const tick = (now) => {
+          if (t0 === null) t0 = now;
+          const p = Math.min(1, (now - t0) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const v = start + (end - start) * eased;
+          hero.style.setProperty("--pos", v + "%");
+          input.value = String(Math.round(v));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        setTimeout(() => requestAnimationFrame(tick), 700);
+      }
+    } else {
+      document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-in"));
+    }
+  </script>
+</body>
+</html>
